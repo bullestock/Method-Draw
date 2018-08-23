@@ -151,49 +151,6 @@
 
 <div id="tools_top" class="tools_panel">
 
-  <div id="canvas_panel" class="context_panel">
-    
-    <h4 class="clearfix">Canvas</h4>
-    
-    <label data-title="Change canvas width">
-      <input size="3" id="canvas_width" type="text" pattern="[0-9]*" />
-      <span class="icon_label">Width</span>
-    </label>
-    <label data-title="Change canvas height">
-      <input id="canvas_height" size="3" type="text" pattern="[0-9]*" />
-      <span class="icon_label">Height</span>
-    </label>
-        
-    
-    <label data-title="Change canvas color" class="draginput">
-      <span>Color</span>
-      <div id="color_canvas_tools">
-        <div class="color_tool active" id="tool_canvas">
-          <div class="color_block">
-            <div id="canvas_bg"></div>
-            <div id="canvas_color"></div>
-          </div>
-        </div>
-      </div>
-    </label>
-
-    <div class="draginput">
-      <span>Sizes</span>
-      <select id="resolution">
-        <option id="selectedPredefined" selected="selected">Custom</option>
-        <option>640x480</option>
-        <option>800x600</option>
-        <option>1024x768</option>
-        <option>1280x960</option>
-        <option>1600x1200</option>
-        <option id="fitToContent" value="content">Fit to Content</option>
-      </select>
-      <div class="caret"></div>
-      <label id="resolution_label">Custom</label>
-    </div>
-
-  </div>
-  
   <div id="rect_panel" class="context_panel">
     <h4 class="clearfix">Rectangle</h4>
     <label>
@@ -214,18 +171,6 @@
     </label>
   </div>
   
-  <div id="path_panel" class="context_panel clearfix">
-    <h4 class="clearfix">Path</h4>
-    <label>
-      <input id="path_x" class="attr_changer" data-title="Change ellipse's cx coordinate" size="3" data-attr="x" pattern="[0-9]*" />
-      <span>X</span>
-    </label>
-    <label>
-      <input id="path_y" class="attr_changer" data-title="Change ellipse's cy coordinate" size="3" data-attr="y" pattern="[0-9]*" />
-      <span>Y</span>
-    </label>
-  </div>
-
   <div id="image_panel" class="context_panel clearfix">
   <h4>Image</h4>
     <label>

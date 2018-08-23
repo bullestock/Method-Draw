@@ -28,7 +28,7 @@
     var is_ready = false;
     curConfig = {
       canvas_expansion: 1, 
-      dimensions: [580,400], 
+      dimensions: [300,400], 
       initFill: {color: 'fff', opacity: 1},
       initStroke: {width: 1.5, color: '000', opacity: 1},
       initOpacity: 1,
@@ -1434,11 +1434,6 @@
 
             $("#" + elname +"_x").val(Math.round(x))
             $("#" + elname +"_y").val(Math.round(y))
-            if (elname === "polyline") {
-              //we're acting as if polylines were paths
-              $("#path_x").val(Math.round(x))
-              $("#path_y").val(Math.round(y))
-            }
                       
             // Elements in this array cannot be converted to a path
             var no_path = ['image', 'text', 'path', 'g', 'use'].indexOf(elname) == -1;
@@ -2517,7 +2512,20 @@
           'images': curPrefs.img_save,
           'round_digits': 6
         }
-        svgCanvas.save(saveOpts);
+        var str = svgCanvas.getSvgString();
+        var url = "/submit";
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: str,
+            contentType: "image/svg+xml; charset=utf-8",
+            dataType: "svg",
+            success: function (data, status)
+            {
+                alert('Submitted: '+status);
+            }
+        });
+        //svgCanvas.save(saveOpts);
       };
       
       var saveSourceEditor = function(){
@@ -2785,14 +2793,11 @@
       //       background-image to none.png (otherwise partially transparent gradients look weird)  
       var colorPicker = function(elem) {
         var picker = elem[0].id == 'stroke_color' ? 'stroke' : 'fill';
-        var is_background = elem[0].id == "canvas_color"
-        if (is_background) picker = 'canvas'
-//        var opacity = (picker == 'stroke' ? $('#stroke_opacity') : $('#fill_opacity'));
         var paint = Editor.paintBox[picker].paint;
         
         var title = (picker == 'stroke' ? 'Pick a Stroke Paint and Opacity' : 'Pick a Fill Paint and Opacity');
         var was_none = false;
-        var pos = is_background ? {'right': 175, 'top': 50} : {'left': 50, 'bottom': 50}
+        var pos = {'left': 50, 'bottom': 50}
         
         $("#color_picker")
           .draggable({cancel:'.jGraduate_tabs, .jGraduate_colPick, .jGraduate_gradPick, .jPicker', containment: 'window'})
@@ -2959,7 +2964,7 @@
       
       Editor.paintBox.fill = new PaintBox('#fill_color', 'fill');
       Editor.paintBox.stroke = new PaintBox('#stroke_color', 'stroke');
-      Editor.paintBox.canvas = new PaintBox('#canvas_color', 'canvas');
+        Editor.paintBox.canvas = null;
 
       $('#stroke_width').val(curConfig.initStroke.width);
       $('#group_opacity').val(curConfig.initOpacity * 100);
@@ -3012,10 +3017,6 @@
         }
       });
       
-      $('#tool_canvas').on("click touchstart", function(){
-          colorPicker($('#canvas_color'));
-      });
-      
       $('#tool_stroke').on("touchstart", function(){
           $('#tool_stroke').addClass('active');
           $("#tool_fill").removeClass('active');
@@ -3045,11 +3046,6 @@
       });
       
     
-    //  function changeResolution(x,y) {
-    //    var zoom = svgCanvas.getResolution().zoom;
-    //    setResolution(x * zoom, y * zoom);
-    //  }
-      
       var centerCanvas = function() {
         // this centers the canvas vertically in the workarea (horizontal handled in CSS)
         workarea.css('line-height', workarea.height() + 'px');
@@ -3459,8 +3455,6 @@
       $('#line_x2')      .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
       $('#line_y1')      .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
       $('#line_y2')      .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
-      $('#path_x')       .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
-      $('#path_y')       .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
       $('#rect_x')       .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
       $('#rect_y')       .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
       $('#g_x')      .dragInput({ min: null, max: null,  step:  1,  callback: changeAttribute,     cursor: false                         });
