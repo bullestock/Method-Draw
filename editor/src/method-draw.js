@@ -509,36 +509,6 @@
       
       // called when we've selected a different element
       var selectedChanged = function(window,elems) {        
-        var mode = svgCanvas.getMode();
-        if(mode === "select") setSelectMode();
-        if (mode === "pathedit") return updateContextPanel();
-        // if elems[1] is present, then we have more than one element
-        selectedElement = (elems.length == 1 || elems[1] == null ? elems[0] : null);
-        elems = elems.filter(Boolean)
-        multiselected = (elems.length >= 2) ? elems : false;
-        if (svgCanvas.elementsAreSame(multiselected)) selectedElement = multiselected[0]
-        if (selectedElement != null) {
-          $('#multiselected_panel').hide()
-          updateToolbar();
-          if (multiselected.length) {//multiselected elements are the same
-            $('#tools_top').addClass('multiselected')
-          }
-        }
-        else if (multiselected.length) {
-          $('.context_panel').hide()
-          $('#tools_top').removeClass('multiselected')
-          $('#multiselected_panel').show()
-        }
-        else {
-          $('.context_panel').hide()
-          $('#canvas_panel').show()
-          $('#tools_top').removeClass('multiselected')
-        }
-        svgCanvas.runExtensions("selectedChanged", {
-          elems: elems,
-          selectedElement: selectedElement,
-          multiselected: multiselected
-        });
       };
     
       // Call when part of element is in process of changing, generally
@@ -654,14 +624,6 @@
         }
         animateZoom()
         
-        
-        
-        //if(autoCenter) {
-        //  updateCanvas();
-        //} else {
-        //  updateCanvas(false, {x: bb.x * zoomlevel + (bb.width * zoomlevel)/2, y: bb.y * zoomlevel + (bb.height * zoomlevel)/2});
-        //}
-    
         if(svgCanvas.getMode() == 'zoom' && bb.width) {
           // Go to select if a zoom box was drawn
           setSelectMode();
@@ -2417,7 +2379,6 @@
       var zoomImage = function(multiplier) {
         var res = svgCanvas.getResolution();
         multiplier = multiplier?res.zoom * multiplier:1;
-    //    setResolution(res.w * multiplier, res.h * multiplier, true);
         $('#zoom').val(multiplier * 100);
         svgCanvas.setZoom(multiplier);
         zoomDone();
@@ -3688,11 +3649,7 @@
         w = Math.max(w_orig, svgCanvas.contentW * zoom * multi);
         h = Math.max(h_orig, svgCanvas.contentH * zoom * multi);
         
-        if(w == w_orig && h == h_orig) {
-          workarea.css('overflow','hidden');
-        } else {
-          workarea.css('overflow','scroll');
-        }
+        workarea.css('overflow','hidden');
         
         var old_can_y = cnvs.height()/2;
         var old_can_x = cnvs.width()/2;
@@ -3723,9 +3680,6 @@
           new_ctr.x += offset.x,
           new_ctr.y += offset.y;
         }
-        
-        //width.val(offset.x)
-        //height.val(offset.y)
         
         if(center) {
           // Go to top-left for larger documents
