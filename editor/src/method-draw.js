@@ -2480,10 +2480,13 @@
             type: "POST",
             data: str,
             contentType: "image/svg+xml; charset=utf-8",
-            dataType: "svg",
             success: function (data, status)
             {
-                alert('Submitted: '+status);
+                console.log('Success: '+status);
+            },
+            error: function (data, status, err)
+            {
+                alert('POST failed ('+status+') with error: '+err);
             }
         });
         //svgCanvas.save(saveOpts);
